@@ -209,7 +209,14 @@ endfunction
 " Shorten file name
 function! s:short_filename(filename)
   if exists('g:ctrlp_tjump_shortener')
-    let short_filename = substitute(a:filename, g:ctrlp_tjump_shortener[0], g:ctrlp_tjump_shortener[1], 'g')
+    if (type(g:ctrlp_tjump_shortener[0]) == 3)
+      let short_filename = a:filename
+      for short_pattern in g:ctrlp_tjump_shortener
+        let short_filename = substitute(short_filename, short_pattern[0], short_pattern[1], 'g')
+      endfor
+    else
+      let short_filename = substitute(a:filename, g:ctrlp_tjump_shortener[0], g:ctrlp_tjump_shortener[1], 'g')
+    endif
   else
     let short_filename = a:filename
   end
